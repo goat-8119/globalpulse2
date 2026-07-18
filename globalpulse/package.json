@@ -1,0 +1,37 @@
+{
+  "name": "globalpulse",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "tsx db/migrate.ts",
+    "db:seed-countries": "tsx db/seed-countries.ts",
+    "db:seed-indicators": "tsx db/seed-indicators.ts",
+    "db:seed-macro-indicators": "tsx db/seed-macro-indicators.ts",
+    "backfill:market": "tsx scripts/backfill-market.ts",
+    "ingest:market": "tsx scripts/ingest-market.ts",
+    "ingest:macro": "tsx scripts/ingest-macro.ts",
+    "compute:growth-indexes": "tsx scripts/compute-growth-indexes.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^2.15.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

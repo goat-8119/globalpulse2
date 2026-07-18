@@ -1,0 +1,115 @@
+/*
+  Design plan
+  Subject: a markets/macro terminal for self-directed investors who want
+  signal fast — not a marketing page. Hairline rules + dense tabular data are
+  a genuine convention of this genre (Bloomberg, trading desks), not a
+  default reached for out of habit.
+
+  Color (named):
+    --bg-void        #0A0D12  page background, near-black
+    --bg-panel       #12161D  card/panel background
+    --bg-panel-raised#181D26  hovered/raised panel
+    --ink            #E7EBEF  primary text
+    --ink-muted      #7C8797  secondary text
+    --rule           #232A35  hairline dividers
+    --signal-up      #34D399  positive change
+    --signal-down    #FB7C6C  negative change
+    --signal-amber   #F2B84B  anomaly / neutral flag
+    --accent-pulse   #5EEAD4  signature "live" accent, distinct from up/down
+
+  Type:
+    --font-display   Archivo 700/800 — headers, index scores
+    --font-body      Inter 400/500   — prose, labels
+    --font-mono      IBM Plex Mono   — every number, tabular-nums
+
+  Signature: a small pulsing dot next to each panel's freshness timestamp —
+  ties the product name (GlobalPulse) to the real job_runs staleness data.
+*/
+
+:root {
+  --bg-void: #0a0d12;
+  --bg-panel: #12161d;
+  --bg-panel-raised: #181d26;
+  --ink: #e7ebef;
+  --ink-muted: #7c8797;
+  --rule: #232a35;
+  --signal-up: #34d399;
+  --signal-down: #fb7c6c;
+  --signal-amber: #f2b84b;
+  --accent-pulse: #5eead4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--bg-void);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.mono {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-pulse);
+  outline-offset: 2px;
+}
+
+.up {
+  color: var(--signal-up);
+}
+.down {
+  color: var(--signal-down);
+}
+.amber {
+  color: var(--signal-amber);
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-pulse);
+  box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.6);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(94, 234, 212, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(94, 234, 212, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    animation: none;
+  }
+}
