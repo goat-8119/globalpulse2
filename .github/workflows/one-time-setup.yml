@@ -1,0 +1,30 @@
+name: one-time-setup
+
+# Manual only — click "Run workflow" on the Actions tab in GitHub's website.
+# Runs schema migration, country + market-indicator seeding, and the 2-year
+# backfill in sequence, so the whole Phase 1 setup can happen without ever
+# opening a terminal. Safe to re-run: every step is idempotent.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: npm run db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - run: npm run db:seed-countries
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - run: npm run db:seed-indicators
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - run: npm run backfill:market
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
