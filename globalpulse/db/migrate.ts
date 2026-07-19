@@ -11,12 +11,16 @@ async function main() {
   const schema = readFileSync(schemaPath, "utf-8");
 
   // Neon's HTTP driver runs one statement per call, so split on semicolons at
-  // statement boundaries. Comments and blank lines are safe to leave in since
-  // they don't produce empty statements after this split.
+  // statement boundaries. A chunk is only dropped if it's ENTIRELY comments/
+  // whitespace — a real statement with an explanatory comment directly above
+  // it (common throughout this schema) must still be kept in full.
   const statements = schema
     .split(/;\s*(?:\n|$)/)
     .map((s) => s.trim())
-    .filter((s) => s.length > 0 && !s.startsWith("--"));
+    .filter((s) => {
+      if (s.length === 0) return false;
+      return s.split("\n").some((line) => !line.trim().startsWith("--") && line.trim().length > 0);
+    });
 
   console.log(`Applying ${statements.length} statements to ${DATABASE_URL.split("@")[1] ?? "database"}...`);
 
