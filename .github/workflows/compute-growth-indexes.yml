@@ -1,0 +1,21 @@
+name: compute-growth-indexes
+
+on:
+  schedule:
+    - cron: '30 12 * * *'  # 30 min after the daily macro refresh
+  workflow_dispatch: {}
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: globalpulse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm run compute:growth-indexes
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
